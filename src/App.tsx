@@ -1,24 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
+import styles from "./App.module.scss";
+import EpisodesListPage from "./pages/EpisodesListPage";
+import HomePage from "./pages/HomePage";
+import CharactersListPage from "./pages/CharactersList";
+
+const routeConfig = {
+  root: { path: "/", component: HomePage },
+  episodes: { path: "/episodes", component: EpisodesListPage },
+  characters: { path: "/characters", component: CharactersListPage },
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.App}>
+      <div className={styles.Wrapper}>
+        <Router>
+          <Switch>
+            <Route
+              exact
+              path={routeConfig.root.path}
+              render={routeConfig.root.component}
+            />
+            <Route
+              path={routeConfig.episodes.path}
+              render={routeConfig.episodes.component}
+            />
+            <Route
+              path={routeConfig.characters.path}
+              render={routeConfig.characters.component}
+            />
+            <Redirect to={routeConfig.root.path} />
+          </Switch>
+        </Router>
+      </div>
     </div>
   );
 }
