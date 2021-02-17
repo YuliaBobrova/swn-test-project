@@ -1,9 +1,10 @@
 import React from "react";
+import CharactersList from "../components/CharactersList/CharactersList";
 
 const CharactersListPage = () => {
 
   return (
-    <div>CharactersList</div>
+    <CharactersList/>
   );
 };
 

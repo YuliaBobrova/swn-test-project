@@ -1,0 +1,65 @@
+.Item {
+  width: 600px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: rgb(60, 62, 68);
+  border-radius: 0.5rem;
+  margin: 0.75rem;
+  box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px,
+    rgb(0 0 0 / 6%) 0px 2px 4px -1px;
+}
+
+.ItemContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.AvatarContaier {
+  flex: 2 1 0%;
+  width: 100%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    opacity: 1;
+    transition: opacity 0.5s ease 0s;
+    object-position: center center;
+    object-fit: cover;
+  }
+}
+
+.InfoContaier {
+  flex: 3 1 0%;
+  position: relative;
+  padding: 0.75rem;
+  color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
+}
+
+.Title{
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.Info {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+@media (max-width: 640px) {
+  .Item {
+    flex-direction: column;
+    height: initial;
+    width: 100%;
+  }
+}
