@@ -1,36 +1,30 @@
-import { ceil } from "lodash";
-import { default as React, useState, useEffect } from "react";
-import styles from "./Pagination.module.scss";
 import qs from "qs";
-import { useHistory, useLocation } from "react-router-dom";
+import { default as React } from "react";
+import { useHistory } from "react-router-dom";
+import { usePage } from "../../../utils/hooks";
+import styles from "./Pagination.module.scss";
 
 interface IProps {
   count: number;
   limitOnPage: number;
 }
 
-const Pagination: React.SFC<IProps> = ({
-  count = 20,
-  limitOnPage,
-}: IProps) => {
+const Pagination: React.SFC<IProps> = ({ count = 20, limitOnPage }: IProps) => {
   const countOfVisiblePages = 3;
-  const countOfPages = ceil(count / limitOnPage);
+  const countOfPages = Math.ceil(count / limitOnPage);
 
   const history = useHistory();
 
-  const location = useLocation();
-
-  const setPaginationToUrl =(page: number) => {
+  const setPaginationToUrl = (page: number) => {
     const query = { page: page };
 
     const searchString = qs.stringify(query);
     history.push({
       search: `?${searchString}`,
     });
-  }
+  };
 
-  const search = qs.parse(location.search.replace("?", ""));
-  const currentPage = typeof search.page === "string" ?  parseInt(search.page) : 1;
+  const currentPage = usePage();
 
   const pagesBoxes = () => {
     let pages: any[] = [];
@@ -50,11 +44,11 @@ const Pagination: React.SFC<IProps> = ({
           key={i + 1}
           className={
             currentPage === i + 1
-              ? styles.paginationSelectedPage
-              : styles.paginationPage
+              ? styles.PaginationSelectedPage
+              : styles.PaginationPage
           }
           onClick={() => {
-            setPaginationToUrl(i + 1)
+            setPaginationToUrl(i + 1);
           }}
         >
           {i + 1}
@@ -65,28 +59,32 @@ const Pagination: React.SFC<IProps> = ({
   };
 
   return (
-    <div className={styles.paginationContainer}>
-      <div
-        className={styles.paginationBtn}
-        onClick={() => {
-          if (currentPage - 1 > 0) {
-            setPaginationToUrl(currentPage - 1)
-          }
-        }}
-      >
-        Previous
-      </div>
+    <div className={styles.PaginationContainer}>
+      {currentPage - 1 !== 0 ? (
+        <div
+          className={styles.PaginationBtn}
+          onClick={() => {
+            if (currentPage - 1 > 0) {
+              setPaginationToUrl(currentPage - 1);
+            }
+          }}
+        >
+          {"<"}
+        </div>
+      ) : null}
       {pagesBoxes()}
-      <div
-        className={styles.paginationBtn}
-        onClick={() => {
-          if (currentPage < countOfPages) {
-            setPaginationToUrl(currentPage + 1)
-          }
-        }}
-      >
-        Next
-      </div>
+      {currentPage !== countOfPages ? (
+        <div
+          className={styles.PaginationBtn}
+          onClick={() => {
+            if (currentPage < countOfPages) {
+              setPaginationToUrl(currentPage + 1);
+            }
+          }}
+        >
+          {">"}
+        </div>
+      ) : null}
     </div>
   );
 };

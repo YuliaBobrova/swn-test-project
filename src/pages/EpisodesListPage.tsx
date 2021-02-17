@@ -2,10 +2,7 @@ import React from "react";
 import EpisodesList from "../components/EpsodesList/EpsodesList";
 
 const EpisodesListPage = () => {
-
-  return (
-    <EpisodesList/>
-  );
+  return <EpisodesList />;
 };
 
 export default EpisodesListPage;

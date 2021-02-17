@@ -1,23 +1,14 @@
-.Item {
+.Character {
   width: 600px;
-  height: 200px;
+  height: 250px;
   display: flex;
   justify-content: center;
-  align-items: center;
   overflow: hidden;
   background: rgb(60, 62, 68);
   border-radius: 0.5rem;
   margin: 0.75rem;
   box-shadow: rgb(0 0 0 / 10%) 0px 4px 6px -1px,
     rgb(0 0 0 / 6%) 0px 2px 4px -1px;
-}
-
-.ItemContent {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
 }
 
 .AvatarContaier {
@@ -44,10 +35,11 @@
   flex-direction: column;
 }
 
-.Title{
+.Title {
   text-align: center;
   font-size: 24px;
   font-weight: 600;
+  margin-bottom: 30px;
 }
 
 .Info {
@@ -56,8 +48,42 @@
   margin: 15px 0;
 }
 
+.Item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.IndicatorAlive,
+.IndicatorDead,
+.IndicatorUnknown {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.IndicatorAlive {
+  background: greenyellow;
+}
+
+.IndicatorDead {
+  background: red;
+}
+
+.IndicatorUnknown {
+  background: khaki;
+}
+
+.Icon {
+  width: 15px;
+  height: 15px;
+  margin-left: -2px;
+  margin-right: 10px;
+}
+
 @media (max-width: 640px) {
-  .Item {
+  .Character {
     flex-direction: column;
     height: initial;
     width: 100%;

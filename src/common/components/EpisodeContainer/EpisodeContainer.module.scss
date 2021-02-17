@@ -21,6 +21,7 @@
 }
 
 .Title{
+  color: #02b1c8;
   text-align: center;
   font-size: 24px;
   font-weight: 600;
@@ -28,8 +29,11 @@
 
 .Info {
   display: flex;
-  flex-direction: column;
   margin: 15px 0;
+
+  label:first-child {
+    margin-right: 20px;
+  }
 }
 
 @media (max-width: 640px) {

@@ -1,14 +1,15 @@
 import React from "react";
 import {
   BrowserRouter as Router,
+  Redirect,
   Route,
   Switch,
-  Redirect,
 } from "react-router-dom";
 import styles from "./App.module.scss";
+import Header from "./common/components/Header/Header";
+import CharactersListPage from "./pages/CharactersList";
 import EpisodesListPage from "./pages/EpisodesListPage";
 import HomePage from "./pages/HomePage";
-import CharactersListPage from "./pages/CharactersList";
 
 const routeConfig = {
   root: { path: "/", component: HomePage },
@@ -19,6 +20,7 @@ const routeConfig = {
 function App() {
   return (
     <div className={styles.App}>
+      <Header />
       <div className={styles.Wrapper}>
         <Router>
           <Switch>

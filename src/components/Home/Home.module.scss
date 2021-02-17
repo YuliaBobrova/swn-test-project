@@ -1,8 +1,45 @@
+.Container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: center / cover no-repeat url("../../assets/img/background.jpg");
+}
 
-.Wrapper{
+.Content {
+  width: 100%;
+  max-width: 930px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  min-height: 100vh;
+  background: #000000;
+  box-shadow: 0 0 30px 35px #000000;
+}
+
+.Portal {
+  width: 400px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: center / cover no-repeat url("../../assets/img/portalHome.png");
+  animation: rotation 8s infinite linear;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600px;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+@media (max-width: 960px) {
+  .Portal {
+    width: 150px;
+    height: 150px;
+  }
 }

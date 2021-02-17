@@ -1,0 +1,16 @@
+{
+  "GET_STARTED": "Loslegen",
+  "SEASON_FILTER": "Staffel",
+  "SEASON": "Staffel",
+  "EPISODE": "Folge",
+  "VIEW_CHARACTERS": "Zeichen anzeigen",
+  "BACK": "Zurück",
+  "STATUS": "Status",
+  "GENDER": "Geschlecht",
+  "NAME": "Name",
+  "ALIVE":"Lebendig",
+  "DEAD":"Tot",
+  "UNKNOWN":"unbekannt",
+  "MALE":"Männlich",
+  "FEMALE": "Weiblich"
+}

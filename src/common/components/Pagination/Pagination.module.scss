@@ -1,34 +1,37 @@
-.paginationContainer {
+.PaginationContainer {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   font-size: 12px;
-  color: #000000;
+  color: #ffffff;
 }
 
-.paginationPage,
-.paginationSelectedPage {
+.PaginationPage,
+.PaginationSelectedPage {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   margin-right: 10px;
   cursor: pointer;
 }
 
-.paginationPage {
+.PaginationPage {
   border: solid 1px;
+  border-radius: 5px;
 }
 
-.paginationSelectedPage {
-  color: rgb(120, 182, 58);
-  border: solid 1px rgb(120, 182, 58);
+.PaginationSelectedPage {
+  color: #02b1c8;
+  border: solid 1px #02b1c8;
+  border-radius: 5px;
 }
 
-.paginationBtn {
+.PaginationBtn {
   margin-right: 10px;
 }
 
-.paginationBtn:hover {
-  color: rgb(120, 182, 58);
+.PaginationBtn:hover {
+  color: #02b1c8;
 }

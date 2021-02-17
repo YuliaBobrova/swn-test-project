@@ -1,30 +1,43 @@
-import React from "react";
-import styles from "./EpisodeContainer.module.scss";
-import { IEpisode } from "../../models/Episode.types";
-import { getSeason, getEisodeNumber } from "../../../utils/episodeHandler";
-import { useHistory } from "react-router-dom";
 import qs from "qs";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import Button from "../Button/Button";
+import styles from "./EpisodeContainer.module.scss";
 
 interface IProps {
-  episode: IEpisode;
+  id: string;
+  name: string;
+  season: string;
+  episode: string;
+  buttonLabel: string;
 }
 
-const EpisodeContainer: React.FC<IProps> = ({ episode }: IProps) => {
+const EpisodeContainer: React.FC<IProps> = ({
+  id,
+  name,
+  season,
+  episode,
+  buttonLabel,
+}: IProps) => {
   const history = useHistory();
   return (
     <div className={styles.Item}>
       <div className={styles.ItemContent}>
-        <label className={styles.Title}>{episode.name}</label>
+        <label className={styles.Title}>{name}</label>
         <div className={styles.Info}>
-          <label>{getSeason(episode.episode)}</label>
-          <label>{getEisodeNumber(episode.episode)}</label>
+          <label>{season}</label>
+          <label>{episode}</label>
         </div>
-        <button onClick={()=>{
-          const query = { episode: episode.id };
+        <Button
+          size="small"
+          label={buttonLabel}
+          onClick={() => {
+            const query = { episode: id };
 
-          const searchString = qs.stringify(query);
-      history.push({search:searchString, pathname: "/characters"})
-    }}>View characters</button>
+            const searchString = qs.stringify(query);
+            history.push({ search: searchString, pathname: "/characters" });
+          }}
+        />
       </div>
     </div>
   );

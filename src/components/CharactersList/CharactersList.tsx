@@ -1,19 +1,18 @@
 import { useQuery } from "@apollo/client";
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import EpisodeContainer from "../../common/components/EpisodeContainer/EpisodeContainer";
-import Pagination from "../../common/components/Pagination/Pagination";
-import { seasons } from "../../common/consts/seasons";
-import { IEpisode } from "../../common/models/Episode.types";
-import { IOptionItem } from "../../common/models/OptionItem.types";
-import {
-  GET_EPISODES,
-  GET_EPISODE_BY_ID,
-} from "../../modules/episodes/service";
-import styles from "./CharactersList.module.scss";
-import qs from "qs";
+import React, { useState } from "react";
+import { withNamespaces } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import Alert from "../../common/components/Alert/Alert";
+import Button from "../../common/components/Button/Button";
 import CharacterContainer from "../../common/components/CharacterContainer/CharacterContainer";
+import FilterInput from "../../common/components/FilterInput/FilterInput";
+import FilterSelect from "../../common/components/FilterSelect/FilterSelect";
+import Spinner from "../../common/components/Spinner/Spinner";
+import { genders, statuses } from "../../common/consts/filters";
 import { ICharacter } from "../../common/models/Character.types";
+import { GET_EPISODE_BY_ID } from "../../modules/episodes/service";
+import { useEpisode } from "../../utils/hooks";
+import styles from "./CharactersList.module.scss";
 
 interface IFilter {
   gender: string;
@@ -21,11 +20,10 @@ interface IFilter {
   name: string;
 }
 
-const CharactersList: React.FC<{}> = () => {
-  const location = useLocation();
-  const search = qs.parse(location.search.replace("?", ""));
-  const episode =
-    typeof search.episode === "string" ? parseInt(search.episode) : null;
+const CharactersList: React.FC<{}> = ({ t }: any) => {
+  const episode = useEpisode();
+
+  const history = useHistory();
 
   const [filter, setFilter] = useState<IFilter>({
     gender: "",
@@ -38,56 +36,95 @@ const CharactersList: React.FC<{}> = () => {
   });
 
   if (loading) {
-    return <label>dcddsfds</label>;
+    return (
+      <div className={styles.SpinnerWrapper}>
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <Alert text={error.message} />;
   }
 
   const CharactersList = data.episode.characters
     .filter((character: ICharacter) => character.gender.includes(filter.gender))
     .filter((character: ICharacter) => character.status.includes(filter.status))
-    .filter((character: ICharacter) => character.name.toLowerCase().includes(filter.name.toLowerCase()))
+    .filter((character: ICharacter) =>
+      character.name.toLowerCase().includes(filter.name.toLowerCase())
+    )
     .map((character: ICharacter) => {
       return <CharacterContainer key={character.id} character={character} />;
     });
 
-  return (
-    <div className={styles.Wrapper}>
-      <div>
-        <select
-          value={filter.gender}
-          onChange={(event) => setFilter({gender: event.target.value, status: filter.status, name: filter.name})}
-        >
-          <option key={"none"} value=""></option>
-          <option key={"Male"} value="Male">
-            Male
-          </option>
-          <option key={"Female"} value="Female">
-            Female
-          </option>
-        </select>
+  const statusOptions = statuses.map((status) => {
+    return {
+      key: status.key,
+      value: `${t(status.value)}`,
+    };
+  });
 
-        <select
-          value={filter.status}
-          onChange={(event) => setFilter({gender: filter.gender, status: event.target.value, name: filter.name})}
-        >
-          <option key={"none"} value=""></option>
-          <option key={"Alive"} value="Alive">
-            Alive
-          </option>
-          <option key={"Dead"} value="Dead">
-            Dead
-          </option>
-          <option key={"unknown"} value="unknown">
-            unknown
-          </option>
-        </select>
-        <input
-          value={filter.name}
-          onChange={(event) => setFilter({gender: filter.gender, status: filter.status, name: event.target.value})}
+  const genderOptions = genders.map((gender) => {
+    return {
+      key: gender.key,
+      value: `${t(gender.value)}`,
+    };
+  });
+
+  return (
+    <div className={styles.Wrap}>
+      <div className={styles.BackBtn}>
+        <Button
+          size="big"
+          label={t("BACK")}
+          onClick={() => history.push({ pathname: "/episodes" })}
         />
+      </div>
+      <div className={styles.Filters}>
+        <div className={styles.Field}>
+          <FilterSelect
+            label={t("STATUS")}
+            selectedItem={filter.status}
+            options={statusOptions}
+            onSelectOption={(value) =>
+              setFilter({
+                gender: filter.gender,
+                status: value,
+                name: filter.name,
+              })
+            }
+          />
+        </div>
+        <div className={styles.Field}>
+          <FilterSelect
+            label={t("GENDER")}
+            selectedItem={filter.gender}
+            options={genderOptions}
+            onSelectOption={(value) =>
+              setFilter({
+                gender: value,
+                status: filter.status,
+                name: filter.name,
+              })
+            }
+          />
+        </div>
+        <div className={styles.Field}>
+          <FilterInput
+            label={t("NAME")}
+            onChange={(value: string) =>
+              setFilter({
+                gender: filter.gender,
+                status: filter.status,
+                name: value,
+              })
+            }
+          />
+        </div>
       </div>
       <div className={styles.CharactersList}>{CharactersList}</div>;
     </div>
   );
 };
 
-export default CharactersList;
+export default withNamespaces()(CharactersList);

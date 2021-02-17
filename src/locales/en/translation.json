@@ -1,0 +1,17 @@
+{
+  "GET_STARTED": "Get started",
+  "SEASON_FILTER": "Seasons",
+  "SEASON": "Season",
+  "EPISODE": "Episode",
+  "VIEW_CHARACTERS": "View characters",
+  "BACK": "Back",
+  "STATUS": "Status",
+  "GENDER": "Gender",
+  "NAME": "Name",
+  "ALIVE":"Alive",
+  "DEAD":"Dead",
+  "UNKNOWN":"unknown",
+  "MALE":"Male",
+  "FEMALE": "Female"
+
+}
