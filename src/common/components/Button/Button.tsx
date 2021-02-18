@@ -33,14 +33,17 @@ const ButtonComponent = styled.button<IProps>`
   }
 `;
 
-const Button: React.FC<IProps> = (props: IProps) => {
-  const { label } = props;
+const Button: React.FC<IProps> = ({
+  size,
+  label,
+  disabled,
+  onClick,
+}: IProps) => {
   return (
-    <ButtonComponent {...props}>
+    <ButtonComponent size={size} label={label} onClick={onClick}>
       {label}
     </ButtonComponent>
   );
 };
-
 
 export default Button;

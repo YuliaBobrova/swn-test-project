@@ -1,6 +1,9 @@
 import { useQuery } from "@apollo/client";
+import qs from "qs";
 import React, { useState } from "react";
 import { withNamespaces } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
 import Alert from "../../common/components/Alert/Alert";
 import EpisodeContainer from "../../common/components/EpisodeContainer/EpisodeContainer";
 import FilterSelect from "../../common/components/FilterSelect/FilterSelect";
@@ -9,12 +12,63 @@ import Spinner from "../../common/components/Spinner/Spinner";
 import { seasons } from "../../common/consts/filters";
 import { IEpisode } from "../../common/models/Episode.types";
 import { GET_EPISODES } from "../../modules/episodes/service";
+import { contentHeight } from "../../styles";
 import { getEisodeNumber, getSeason } from "../../utils/episodeHandler";
 import { usePage } from "../../utils/hooks";
-import styles from "./EpisodesList.module.scss";
+
+const Wrapper = styled.div`
+  width: 100%;
+  min-height: ${contentHeight};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: ${(props) => props.theme.main};
+  padding: 10px;
+`;
+
+Wrapper.defaultProps = {
+  theme: {
+    main: "flex-start",
+  },
+};
+
+const theme = {
+  main: "center",
+};
+
+const List = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  color: #ffffff;
+`;
+
+const Filters = styled.div`
+  width: 80%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Field = styled.div`
+  width: 100%;
+  max-width: 350px;
+`;
+
+const PaginationContainer = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 20px 0;
+  justify-content: center;
+  align-items: center;
+`;
 
 const EpisodesList: React.FC<{}> = ({ t }: any) => {
   const page = usePage();
+
+  const history = useHistory();
 
   const maxCountItemsPerPage = 20;
 
@@ -26,9 +80,9 @@ const EpisodesList: React.FC<{}> = ({ t }: any) => {
 
   if (loading) {
     return (
-      <div className={styles.SpinnerWrapper}>
+      <Wrapper theme={theme}>
         <Spinner />
-      </div>
+      </Wrapper>
     );
   }
 
@@ -49,7 +103,7 @@ const EpisodesList: React.FC<{}> = ({ t }: any) => {
     );
   });
 
-  const seasonsOptions = [
+  const sesonsOptions = [
     { key: "", value: "" },
     ...seasons.map((season) => {
       return { key: season.key, value: `${season.value} ${t("SEASON")}` };
@@ -57,24 +111,32 @@ const EpisodesList: React.FC<{}> = ({ t }: any) => {
   ];
 
   return (
-    <div className={styles.Wrap}>
-      <div className={styles.Filters}>
-        <div className={styles.Field}>
+    <Wrapper>
+      <Filters>
+        <Field>
           <FilterSelect
             label={t("SEASON_FILTER")}
             selectedItem={seasoneFilter}
-            options={seasonsOptions}
-            onSelectOption={(value) => setSeasoneFilter(value)}
+            options={sesonsOptions}
+            onSelectOption={(value) => {
+              const query = { page: 1 };
+
+              const searchString = qs.stringify(query);
+              history.push({
+                search: `?${searchString}`,
+              });
+              setSeasoneFilter(value);
+            }}
           />
-        </div>
-      </div>
-      <div className={styles.EpisodesList}>{episodesList}</div>
+        </Field>
+      </Filters>
+      <List>{episodesList}</List>
       {data.episodes.info.count > maxCountItemsPerPage ? (
-        <div className={styles.Pagination}>
+        <PaginationContainer>
           <Pagination count={data.episodes.info.count} limitOnPage={20} />
-        </div>
+        </PaginationContainer>
       ) : null}
-    </div>
+    </Wrapper>
   );
 };
 

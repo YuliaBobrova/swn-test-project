@@ -5,11 +5,28 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import styles from "./App.module.scss";
+import styled from "styled-components";
 import Header from "./common/components/Header/Header";
 import CharactersListPage from "./pages/CharactersList";
 import EpisodesListPage from "./pages/EpisodesListPage";
 import HomePage from "./pages/HomePage";
+import { contentHeight } from "./styles";
+
+const Root = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: #000000;
+`;
+
+const Page = styled.div`
+  width: 100%;
+  min-height: ${contentHeight};
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+`;
 
 const routeConfig = {
   root: { path: "/", component: HomePage },
@@ -19,9 +36,9 @@ const routeConfig = {
 
 function App() {
   return (
-    <div className={styles.App}>
+    <Root>
       <Header />
-      <div className={styles.Wrapper}>
+      <Page>
         <Router>
           <Switch>
             <Route
@@ -40,8 +57,8 @@ function App() {
             <Redirect to={routeConfig.root.path} />
           </Switch>
         </Router>
-      </div>
-    </div>
+      </Page>
+    </Root>
   );
 }
 

@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { withNamespaces } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import styled from "styled-components";
 import Alert from "../../common/components/Alert/Alert";
 import Button from "../../common/components/Button/Button";
 import CharacterContainer from "../../common/components/CharacterContainer/CharacterContainer";
@@ -11,14 +12,72 @@ import Spinner from "../../common/components/Spinner/Spinner";
 import { genders, statuses } from "../../common/consts/filters";
 import { ICharacter } from "../../common/models/Character.types";
 import { GET_EPISODE_BY_ID } from "../../modules/episodes/service";
+import { contentHeight } from "../../styles";
 import { useEpisode } from "../../utils/hooks";
-import styles from "./CharactersList.module.scss";
 
 interface IFilter {
   gender: string;
   status: string;
   name: string;
 }
+
+const Wrapper = styled.div`
+  width: 100%;
+  min-height: ${contentHeight};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: ${(props) => props.theme.main};
+  padding: 10px;
+`;
+
+Wrapper.defaultProps = {
+  theme: {
+    main: "flex-start",
+  },
+};
+
+const theme = {
+  main: "center",
+};
+
+const List = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  color: #ffffff;
+`;
+
+const Filters = styled.div`
+  width: 80%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: 768px) {
+    height: 300px;
+    flex-direction: column;
+    padding: 0;
+  }
+`;
+
+const Field = styled.div`
+  width: 20%;
+  max-width: 350px;
+
+  @media (max-width: 768px) {
+    width: 80%;
+  }
+`;
+
+const BackBtn = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+`;
 
 const CharactersList: React.FC<{}> = ({ t }: any) => {
   const episode = useEpisode();
@@ -37,9 +96,9 @@ const CharactersList: React.FC<{}> = ({ t }: any) => {
 
   if (loading) {
     return (
-      <div className={styles.SpinnerWrapper}>
+      <Wrapper theme={theme}>
         <Spinner />
-      </div>
+      </Wrapper>
     );
   }
 
@@ -72,16 +131,16 @@ const CharactersList: React.FC<{}> = ({ t }: any) => {
   });
 
   return (
-    <div className={styles.Wrap}>
-      <div className={styles.BackBtn}>
+    <Wrapper>
+      <BackBtn>
         <Button
           size="big"
           label={t("BACK")}
           onClick={() => history.push({ pathname: "/episodes" })}
         />
-      </div>
-      <div className={styles.Filters}>
-        <div className={styles.Field}>
+      </BackBtn>
+      <Filters>
+        <Field>
           <FilterSelect
             label={t("STATUS")}
             selectedItem={filter.status}
@@ -94,8 +153,8 @@ const CharactersList: React.FC<{}> = ({ t }: any) => {
               })
             }
           />
-        </div>
-        <div className={styles.Field}>
+        </Field>
+        <Field>
           <FilterSelect
             label={t("GENDER")}
             selectedItem={filter.gender}
@@ -108,8 +167,8 @@ const CharactersList: React.FC<{}> = ({ t }: any) => {
               })
             }
           />
-        </div>
-        <div className={styles.Field}>
+        </Field>
+        <Field>
           <FilterInput
             label={t("NAME")}
             onChange={(value: string) =>
@@ -120,10 +179,10 @@ const CharactersList: React.FC<{}> = ({ t }: any) => {
               })
             }
           />
-        </div>
-      </div>
-      <div className={styles.CharactersList}>{CharactersList}</div>;
-    </div>
+        </Field>
+      </Filters>
+      <List>{CharactersList}</List>;
+    </Wrapper>
   );
 };
 
